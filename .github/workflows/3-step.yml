@@ -98,6 +98,7 @@ jobs:
             }
 
       - name: Update comment - step results
+        continue-on-error: true
         uses: GrantBirki/comment@v2.1.1
         with:
           repository: ${{ env.ISSUE_REPOSITORY }}
@@ -116,7 +117,7 @@ jobs:
       # END: Check practical exercise
 
       - name: Fail job if not all checks passed
-        if: contains(steps.*.outcome, 'failure')
+        if: ${{ steps.check-app-js.outcome != 'success' || steps.check-styles-css.outcome != 'success' }}
         run: exit 1
 
   post_next_step_content:
